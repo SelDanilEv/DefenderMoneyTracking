@@ -36,6 +36,7 @@ const AddPersonalInfoPage = (result) => {
     result.personal_ingo_page_email_field = "Email";
     result.personal_ingo_page_created_date_field = "Created date";
     result.personal_ingo_page_approve = "Approve";
+    result.personal_ingo_page_account_updated_message = "User info updated";
 
     return result;
 }

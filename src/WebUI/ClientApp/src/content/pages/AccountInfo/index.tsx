@@ -21,20 +21,20 @@ import { UserInfo } from 'src/models/user_info';
 import APICallWrapper from 'src/api/APIWrapper/APICallWrapper';
 import apiUrls from 'src/api/apiUrls';
 import useUtils from 'src/appUtils';
+import APICallProps from 'src/api/APIWrapper/interfaces/APICallProps';
+import { updateUserInfo } from 'src/actions/currentUserAction';
 
 
 const UpdateUserPage = (props: any) => {
   const u = useUtils()
 
-  const currentUser = {
-    ...props.currentUser
-  };
-
-  const [user, setUser] = useState<UserInfo>(currentUser);
+  const [user, setUser] = useState<UserInfo>({ ...props.currentUser });
 
   const [approve, setApprove] = useState<boolean>(false);
 
   const handleUpdateUser = () => {
+    setApprove(!approve)
+
     const requestBody = {
       name: user.name,
       email: user.email,
@@ -48,9 +48,14 @@ const UpdateUserPage = (props: any) => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify(requestBody)
+        },
+        showSuccess: true,
+        successMesage: u.t("personal_ingo_page_account_updated_message"),
+        onSuccess: async (response) => {
+          props.updateUserInfo(user)
         }
-      }
+      } as APICallProps
     )
   }
 
@@ -82,15 +87,16 @@ const UpdateUserPage = (props: any) => {
                 {u.t("personal_ingo_page_account_info")}
               </Typography>
             </Box>
-            <Box>
-              <FormControlLabel control={
-                <Checkbox checked={approve}
+            <Box textAlign={"right"}>
+              <FormControlLabel
+                sx={{ marginLeft: 0 }}
+                control={<Checkbox checked={approve}
                   onChange={() => setApprove(!approve)} />}
                 label={u.t("personal_ingo_page_approve")} />
               <Button
                 disabled={!approve}
                 onClick={() => handleUpdateUser()}
-                variant="text"
+                variant="outlined"
                 startIcon={<SaveIcon />}>
                 {u.t("personal_ingo_page_save")}
               </Button>
@@ -106,13 +112,20 @@ const UpdateUserPage = (props: any) => {
   );
 }
 
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    updateUserInfo: (user) => {
+      dispatch(updateUserInfo(user));
+    }
+  }
+};
+
 const mapStateToProps = (state: any) => {
   return {
     currentUser: state.auth.user
   };
 };
 
-
 export default
-  connect(mapStateToProps)
+  connect(mapStateToProps, mapDispatchToProps)
     (UpdateUserPage);
