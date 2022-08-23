@@ -1,9 +1,9 @@
 {
-  "name": "defender-service-template-service",
+  "name": "defender-money-tracking",
   "version": "1.0.0",
   "private": true,
-  "title": "Defender Service Template",
-  "description": "Defender Service Template.",
+  "title": "Defender Money Tracking",
+  "description": "Defender Money Tracking.",
   "author": {
     "name": "defender"
   },
