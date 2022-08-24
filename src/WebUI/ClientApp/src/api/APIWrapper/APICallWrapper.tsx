@@ -1,5 +1,3 @@
-import { toast } from 'react-toastify';
-
 import APICallProps from "./interfaces/APICallProps"
 
 import store from "src/state/store"
