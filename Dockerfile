@@ -5,16 +5,20 @@ EXPOSE 443
 
 RUN apt-get install -f
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
-RUN apt-get update && apt-get install -y curl && apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx && curl -sL https://deb.nodesource.com/setup_lts.x | bash - && apt-get install -y nodejs
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
+RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
+RUN apt-get install -y nodejs
 
 WORKDIR /src
 
 COPY ["WebUI/WebUI.csproj", "WebUI/"]
-# COPY ["Application/Application.csproj", "Application/"]
-# COPY ["Domain/Domain.csproj", "Domain/"]
-# COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
+COPY ["Application/Application.csproj", "Application/"]
+COPY ["Domain/Domain.csproj", "Domain/"]
+COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
 
 RUN dotnet restore "WebUI/WebUI.csproj"
 COPY . .
