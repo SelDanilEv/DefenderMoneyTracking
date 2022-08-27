@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Defender.MoneyTracking.Application.Modules.Home.Queries;
 using Defender.MoneyTracking.Application.Enums;
 using Defender.MoneyTracking.Domain.Models;
+using Defender.MoneyTracking.Application.DTOs;
 
 namespace Defender.MoneyTracking.WebUI.Controllers.V1;
 
@@ -15,12 +16,12 @@ public class HomeController : BaseApiController
     }
 
     [HttpGet("health")]
-    [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(HealthDto), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<object> HealthCheckAsync()
+    public async Task<HealthDto> HealthCheckAsync()
     {
-        return new { Status = "Healthy" };
+        return new HealthDto { Status = "Healthy" };
     }
 
     [HttpGet("authorization/check")]
